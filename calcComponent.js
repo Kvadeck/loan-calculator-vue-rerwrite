@@ -1,9 +1,4 @@
 const CalcVue = Vue.createApp({
-    data() {
-        return {
-            title: 'Оформление заявки'
-        };
-    },
     template: `
       <form id="formCalculator"
             class="form-calculator"
@@ -15,11 +10,16 @@ const CalcVue = Vue.createApp({
             Сумма <strong class="range-info-text">ПОД 0,01%</strong>
           </div>
           <div class="range-info__num">
-            <input id="numSum" type="text" class="range-info-text range-info__input" inputmode="numeric">
+            <input @focus="formatPrice" :value="inputPrice" id="numSum" class="range-info-text range-info__input">
             <span class="range-info-text">&nbsp;₸</span>
           </div>
         </div>
-        <input id="rangeSum" type="range" class="input-range w-30">
+        <input 
+            :style="progressPriceStyle" 
+            v-model="rangePrice" id="rangeSum" 
+            type="range" :min="priceMin" :max="priceMax" 
+            class="input-range w-30"
+        >
         <div class="range-ruler">
           <span class="range-info-text">10 000 ₸</span>
           <span class="range-info-text">500 000 ₸</span>
@@ -50,16 +50,38 @@ const CalcVue = Vue.createApp({
           <span class="error">Вы должны согласиться с условиями</span>
         </div>
       </div>
-      <fieldset class="box-fot">
+      <fieldset>
         <div class="btn-box">
           <a id="submitCalculator" href="/questionary/registration/" class="btn-box__submit btn duration">Оформить
             заявку</a>
         </div>
       </fieldset>
       </form>`,
-    methods: {},
-    computed: {},
+    data() {
+        return {
+            title: 'Оформление заявки',
+            dataDays,
+            priceMax: 500,
+            priceMin: 10,
+            rangePrice: (getLocalStorage("creditCalcPrice"))
+                ? getLocalStorage("creditCalcPrice").replace(/ +/g, '') / 1000
+                : 200
+        };
+    },
+    methods: {
+        formatPrice() {}
+    },
+    computed: {
+        inputPrice() {
+            return getSeparatedSum(this.rangePrice * 1_000);
+        },
+        progressPriceStyle() {
+            return setProgressStyle(this.rangePrice, this.priceMax, this.priceMin, '#FF905A', '#FFEBE0')
+        }
+    },
     watch: {},
+    created() {
+    }
 });
 
 CalcVue.mount('#vue-calc')

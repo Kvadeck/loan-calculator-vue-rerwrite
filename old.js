@@ -38,7 +38,7 @@ function initRange(){
     let rangeSum = document.getElementById("rangeSum"),
         numSum = document.getElementById("numSum"),
         numDate = document.getElementById("numDate")
-    rangeTime = document.getElementById("rangeTime"),
+        rangeTime = document.getElementById("rangeTime"),
         numTime = document.getElementById("numTime"),
         numValue = [
             ['1', 'день', '1'],
