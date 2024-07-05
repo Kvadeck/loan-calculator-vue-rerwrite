@@ -1046,6 +1046,7 @@ body.menu #phoneMenu {
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
+  user-select: none
 }
 .main-calc .range-info-text:not(:last-child) {
   margin-right: 3px;
@@ -1068,6 +1069,11 @@ body.menu #phoneMenu {
   width: fit-content;
   text-align: end;
 }
+
+.main-calc .range-info__input:disabled {
+  color: #000;
+}
+
 .main-calc .range-info p {
   font-weight: 700;
   font-size: 14px;
