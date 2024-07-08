@@ -1063,7 +1063,7 @@ body.menu #phoneMenu {
           justify-content: flex-end;
 }
 .main-calc .range-info__input {
-  max-width: 60px;
+  max-width: 65px;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;

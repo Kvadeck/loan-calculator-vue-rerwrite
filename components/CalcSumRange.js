@@ -19,9 +19,8 @@ const CalcSumRange = {
         </div>
         
         <input 
-            :style="progressPriceStyle" 
-            :value="priceValue"
-            @input="changeProgress"
+            :style="progressPriceStyle"
+            v-model="priceValue"
             type="range" 
             :min="priceMin"
             :max="priceMax"
@@ -33,27 +32,49 @@ const CalcSumRange = {
           <span class="range-info-text">{{ priceMax }} 000 {{currency}}</span>
         </div>
       </fieldset>`,
+    props: {
+        currency: {
+            type: String,
+            default: '₽'
+        },
+        max: {
+            type: Number,
+            default: 100
+        },
+        min: {
+            type: Number,
+            default: 10
+        },
+        decimal: {
+            type: Number,
+            default: 1000
+        },
+        price: {
+            type: Number,
+            default: 40
+        }
+    },
+
     data() {
+        // TODO: Set value for priceValue from localStorage if exist.
         return {
-            priceMax: 500,
-            priceMin: 10,
-            priceValue: 200,
-            currency: '₸',
-            decimalPlace: 1000
+            priceMax: this.max,
+            priceMin: this.min,
+            decimalPlace: this.decimal,
+            priceValue: this.price,
         }
     },
     computed: {
         progressPriceStyle() {
             return setProgressStyle(this.priceValue, this.priceMax, this.priceMin, '#FF905A', '#FFEBE0')
         },
-        priceInputValue() {
-          return formatInputPrice(this.priceValue * this.decimalPlace)
+        priceInputValue: {
+            get() {
+                return formatInputPrice(this.priceValue * this.decimalPlace)
+            },
         }
     },
     methods: {
-        changeProgress({target}) {
-            this.priceValue = target.value;
-        },
         focusInHandler({target}) {
             target.value = target.value.replace(/ +/g, '');
         },
@@ -87,7 +108,7 @@ const CalcSumRange = {
             target.value = target.value.replace(/^0+/, '');
 
             // Removes letters from input
-            target.value = target.value.replace(/\D/g,'');
+            target.value = target.value.replace(/\D/g, '');
         }
-    }
+    },
 };
