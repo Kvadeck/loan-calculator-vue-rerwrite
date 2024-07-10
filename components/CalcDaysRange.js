@@ -3,10 +3,10 @@ const CalcDaysRange = {
         <div class="range-info flex">
           <p>Срок</p>
           <div class="range-num date flex">
-            <span id="numTime" class="range-info-text">
+            <span class="range-info-text">
                 {{dayDigit}}
             </span>
-            <span id="numDate" class="range-info-text" >
+            <span class="range-info-text" >
                 {{dayString}}
             </span>
           </div>
@@ -18,7 +18,7 @@ const CalcDaysRange = {
             :min="min" 
             :max="max"
             v-model="dayIndex"
-            @input="changeHandler"
+            v-on:change="changeDataHandler"
             class="input-range w-14" 
         />
         
@@ -45,26 +45,30 @@ const CalcDaysRange = {
             type: String,
             default: '12 месяцев'
         },
+        day: {
+            type: String,
+        }
     },
     data() {
         return {
             dataDays,
-            dayIndex: 14,
-            max: this.max,
-            min: this.min,
-            dayDigit: 14,
-            dayString: 'дней'
+            dayIndex: this.day,
         }
     },
     computed: {
         progressDaysStyle() {
             return setProgressStyle(this.dayIndex, this.max, this.min, '#FF905A', '#FFEBE0')
         },
+        dayDigit() {
+            return this.dataDays[this.dayIndex][0];
+        },
+        dayString() {
+            return this.dataDays[this.dayIndex][1];
+        }
     },
     methods: {
-        changeHandler({target}) {
-            this.dayDigit = this.dataDays[target.value][0];
-            this.dayString = this.dataDays[target.value][1];
+        changeDataHandler() {
+            this.$emit('get-day-value', this.dayIndex);
         }
     }
 };

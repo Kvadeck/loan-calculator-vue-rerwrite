@@ -5,28 +5,26 @@ const CalcSumRange = {
             Сумма <strong class="range-info-text">ПОД 0,01%</strong>
           </div>
           <div class="range-info__num">
-          
             <input
                 @focus="focusInHandler"
-                @focusout="focusOutHandler" 
+                @focusout="focusOutHandler"
+                @keydown.enter="keyDownEnterHandler"
                 :value="priceInputValue"
-                @input="changePriceHandler"
+                @input="inputPriceHandler"
                 class="range-info-text range-info__input"
             >
-                
             <span class="range-info-text">&nbsp;{{currency}}</span>
           </div>
         </div>
-        
         <input 
             :style="progressPriceStyle"
             v-model="priceValue"
+            v-on:change="changeDataHandler"
             type="range" 
             :min="priceMin"
             :max="priceMax"
             class="input-range w-30"
         >
-        
         <div class="range-ruler">
           <span class="range-info-text">{{ priceMin }} 000 {{currency}}</span>
           <span class="range-info-text">{{ priceMax }} 000 {{currency}}</span>
@@ -37,29 +35,19 @@ const CalcSumRange = {
             type: String,
             default: '₽'
         },
-        max: {
-            type: Number,
-            default: 100
-        },
-        min: {
-            type: Number,
-            default: 10
-        },
         decimal: {
             type: Number,
             default: 1000
         },
         price: {
-            type: Number,
-            default: 40
+            type: String,
         }
     },
 
     data() {
-        // TODO: Set value for priceValue from localStorage if exist.
         return {
-            priceMax: this.max,
-            priceMin: this.min,
+            priceMax: 100,
+            priceMin: 10,
             decimalPlace: this.decimal,
             priceValue: this.price,
         }
@@ -68,10 +56,8 @@ const CalcSumRange = {
         progressPriceStyle() {
             return setProgressStyle(this.priceValue, this.priceMax, this.priceMin, '#FF905A', '#FFEBE0')
         },
-        priceInputValue: {
-            get() {
-                return formatInputPrice(this.priceValue * this.decimalPlace)
-            },
+        priceInputValue() {
+            return formatInputPrice(this.priceValue * this.decimalPlace)
         }
     },
     methods: {
@@ -94,9 +80,11 @@ const CalcSumRange = {
                 this.priceValue = Math.round(target.value / this.decimalPlace);
                 target.value = formatInputPrice(this.priceValue * this.decimalPlace)
             }
-
         },
-        changePriceHandler({target}) {
+        keyDownEnterHandler({target}) {
+            target.blur();
+        },
+        inputPriceHandler({target}) {
 
             const maxDecimal = this.priceMax * this.decimalPlace;
 
@@ -109,6 +97,9 @@ const CalcSumRange = {
 
             // Removes letters from input
             target.value = target.value.replace(/\D/g, '');
+        },
+        changeDataHandler() {
+            this.$emit('get-price-value', this.priceValue);
         }
     },
 };

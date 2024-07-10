@@ -1,4 +1,19 @@
 .main__wrapper {
-  justify-content: center;
-  margin-top: 5rem;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
+.form-is-submitted {
+    font-size: 1.2rem;
+    color: #F44336;
+    text-align: center;
+}
+
+.go-back-link {
+    color: blue;
+    border: 1px solid black;
+    padding: 1px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
 }

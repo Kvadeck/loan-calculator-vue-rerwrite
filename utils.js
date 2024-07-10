@@ -2,20 +2,6 @@ function formatInputPrice(value) {
     return String(value).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ")
 }
 
-// TODO: Made this function work
-function editOldPrice() {
-    if (document.getElementById("oldPrice")) {
-        oldPrice.innerHTML = Math.round(Number($("#numSum").val().replace(/ +/g, '')) * 1.1) + '  ₸';
-    }
-}
-
-// TODO: Made this function work
-function editNewPrice(obj) {
-    if (document.getElementById("newPrice")) {
-        newPrice.innerHTML = obj + '  ₸';
-    }
-}
-
 function setLocalStorage(key, value) {
     if (typeof window === 'undefined') {
         throw new Error("localStorage is not available.");
@@ -23,12 +9,12 @@ function setLocalStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
 
-function getLocalStorage(key) {
+function getLocalStorage(key, defaultValue) {
     if (typeof window === 'undefined') {
         throw new Error("localStorage is not available.");
     }
     const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : null;
+    return value ? JSON.parse(value) : defaultValue;
 }
 
 function setProgressStyle(elementValue, max, min, colorFilled, colorEmpty) {
